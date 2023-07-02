@@ -10,8 +10,9 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 import Loading from "../components/Loading";
 import Container from "../components/Container";
+import axios from "axios";
 
-export default function Login() {
+export default function Register() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -28,48 +29,40 @@ export default function Login() {
         }
     } = useForm<FieldValues>({
         defaultValues: {
+            name: '',
             email: '',
             password: ''
         }
     });
 
-    const showSignInErrors = (message: string) => {
-        setError('email', { message });
-        setError('password', { message });
-        setErrorMessage(message);
-    }
-
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         setIsLoading(true);
 
-        signIn('credentials', {
-            ...data,
-            redirect: false
-        })
-            .then((callback) => {
+        axios.post('/api/register', data)
+            .then(() => {
+                console.log('Registered');
+                router.push('/login');
+            })
+            .catch((error) => {
+                console.log(error);
+                setError('email', { message: 'Email already being used' });
+                setErrorMessage('Email already being used');
+            })
+            .finally(() => {
                 setIsLoading(false);
-
-                if(callback?.error) {
-                    console.log(callback.error)
-                    showSignInErrors(callback.error)
-                } else if(callback?.ok) {
-                    console.log('Logged with credentials');
-                    router.push('/');
-                }
-                
             })
     };
 
-    const handleSubmitLogin = useCallback(() => {
+    const handleSubmitRegister = useCallback(() => {
         if(isLoading) return;
     
         handleSubmit(onSubmit)();
       }, [isLoading]);
 
-    const handleRedirectSignUp = useCallback(() => {
+    const handleRedirectSignIn = useCallback(() => {
         if(isLoading) return;
     
-        router.push('/register');
+        router.push('/login');
       }, [isLoading]);
 
     useEffect(() => {
@@ -86,35 +79,43 @@ export default function Login() {
     return (
         <Container>
           {/*Content*/}
-          Login Page
-            <>
-                <div className="flex flex-col gap-4">
-                    <div className="font-light text-neutral-500">Welcome back</div>
-                    <Input
-                        id="email"
-                        label="Email"
-                        disabled={isLoading}
-                        register={register}  
-                        errors={errors}
-                        required
-                    />
-                    <Input
-                        id="password"
-                        label="Password"
-                        type="password"
-                        disabled={isLoading}
-                        register={register}
-                        errors={errors}
-                        required
-                    />
-                </div>
-                {errorMessage && <p className="text-rose-500 text-xs font-light mt-2">{errorMessage}</p>}
-            </>
+          Register Page
+          <>
+          <div className="flex flex-col gap-4">
+            <div className="font-light text-neutral-500">Create an account</div>
+            <Input
+              id="email"
+              label="Email"
+              disabled={isLoading}
+              register={register}
+              errors={errors}
+              required
+            />
+            <Input
+              id="name"
+              label="Name"
+              disabled={isLoading}
+              register={register}
+              errors={errors}
+              required
+            />
+            <Input
+              id="password"
+              label="Password"
+              type="password"
+              disabled={isLoading}
+              register={register}
+              errors={errors}
+              required
+            />
+          </div>
+          {errorMessage && <p className="text-rose-500 text-xs font-light mt-2">{errorMessage}</p>}
+        </>
             <div className="flex flex-col gap-4 mt-3">
                 <Button 
                     disabled={isLoading} 
                     label='Continue'
-                    onClick={handleSubmitLogin}
+                    onClick={handleSubmitRegister}
                 />
                 <hr />
                 <div className="text-xs font-light text-neutral-500 text-center">Or continue with</div>
@@ -147,13 +148,13 @@ export default function Login() {
                 <div className="text-sm text-neutral-500 text-center mt-4 font-light">
                     <p> Don't have an account?<span> </span>
                         <span 
-                            onClick={handleRedirectSignUp} 
+                            onClick={handleRedirectSignIn} 
                             className="
                             text-neutral-800
                             cursor-pointer 
                             hover:underline
                             "
-                        >Sign up</span>
+                        >Log In</span>
                     </p>
                 </div>
             </div>

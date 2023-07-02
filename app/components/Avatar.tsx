@@ -12,8 +12,8 @@ const Avatar: React.FC<AvatarProps> = ({
   return (
     <Image
         className="rounded-full"
-        height={30}
-        width={30}
+        height={100}
+        width={100}
         alt='Avatar'
         src={src || "/default_pfp.png"}
     />

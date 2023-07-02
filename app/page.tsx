@@ -1,6 +1,11 @@
+import getCurrentUser from "./actions/getCurrentUser";
+import Avatar from "./components/Avatar";
 import SignOut from "./components/SignOut";
 
-export default function Home() {
+export default async function Home() {
+
+  const currentUser = await getCurrentUser()
+
   return (
     <main className="h-full">
         <div className="
@@ -9,8 +14,9 @@ export default function Home() {
           flex
           h-full
         ">
-          <div className="w-3/6">
+          <div className="w-[400px] flex flex-col gap-4 items-center">
             {/*Content*/}
+            <Avatar src={currentUser?.image}/>
             <SignOut />
           </div>
         </div>

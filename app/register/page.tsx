@@ -18,8 +18,6 @@ export default function Register() {
     const [errorMessage, setErrorMessage] = useState('');
     const { data: session, status } = useSession();
 
-    console.log(session, status);
-
     const {
         register,
         handleSubmit,

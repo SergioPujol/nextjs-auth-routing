@@ -144,7 +144,7 @@ export default function Register() {
                     />
                 </div>
                 <div className="text-sm text-neutral-500 text-center mt-4 font-light">
-                    <p> Don&apos;t have an account?<span> </span>
+                    <p>Already have an account?<span> </span>
                         <span 
                             onClick={handleRedirectSignIn} 
                             className="

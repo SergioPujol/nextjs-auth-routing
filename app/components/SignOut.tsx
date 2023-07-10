@@ -8,7 +8,7 @@ const SignOut = () => {
   return (
     <Button 
       label="Logout"
-      onClick={signOut} 
+      onClick={() => signOut()} 
     />
   )
 }

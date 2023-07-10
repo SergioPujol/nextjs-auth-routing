@@ -143,7 +143,7 @@ export default function Login() {
                     />
                 </div>
                 <div className="text-sm text-neutral-500 text-center mt-4 font-light">
-                    <p> Don't have an account?<span> </span>
+                    <p> Don&apos;t have an account?<span> </span>
                         <span 
                             onClick={handleRedirectSignUp} 
                             className="
